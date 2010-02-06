@@ -1,0 +1,53 @@
+A clustering solution for Apache CouchDB using node.js
+=====================
+
+lode is beta software and may or may not be under active development ;)
+
+Dependencies
+~~~~~~~~~~~~
+
+ * node.js (>=0.1.27) (http://nodejs.org/)
+ * Apache CouchDB (>= 0.10.1) (http://couchdb.apache.org/)
+
+Installing
+^^^^^^^^^^
+Unclear...
+More options *might* be found by reading the `INSTALL` file.
+
+Security Considerations
+^^^^^^^^^^^^^^^^^^^^^^^
+
+You should be aware of the security considerations involved with running Apache
+CouchDB and consult the README file provided with its distribution. lode will
+likely do nothing to protect you in the case of an insecurely configured or
+deployed Apache CouchDB system.
+
+Running Manually
+^^^^^^^^^^^^^^^^
+
+You can start the server by running
+
+    node lode.js
+
+When Lode starts it should eventually display the following message:
+
+    lode has started. This is excellent news.
+
+Eventually there should be a test suite.
+
+Troubleshooting
+^^^^^^^^^^^^^^^
+
+Ensure that Apache CouchDB is running successfully and consult the wiki:
+
+  http://wiki.github.com/tilgovi/lode/
+
+Running as a Daemon
+^^^^^^^^^^^^^^^^^^^
+
+Advice welcome.
+
+Building
+--------
+
+No building is necessary. Just launch using node as above.
