@@ -27,3 +27,7 @@ exports.shards = function(db_name) {
 		});
 	  });
 };
+
+exports.hash = function(key) {
+  return (require('./crc32').crc32(key) >> 16) % shard_map['shards'].length;
+};
