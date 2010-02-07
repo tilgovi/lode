@@ -14,7 +14,7 @@ var shard_map = {
 //dbname -> dbname$0, etc. Change for loop-back replication resharding.
 var shard_index_sep = '$';
 
-handle_request = function(client_request, client_response) {
+function handle_request(client_request, client_response) {
   request_url_parsed = url.parse(client_request.url, true);
   path_parts = request_url_parsed['pathname'].match(/[^\/$]+/g);
 
@@ -26,6 +26,8 @@ handle_request = function(client_request, client_response) {
   }
 
   switch(path_parts.length) {
+	case 1: //db request
+	  db_name = path_parts[0];
 	default:
 	  client_response.sendHeader(200, {"Content-Type": "text/plain"});
 	  client_response.sendBody("Check back soon...");
