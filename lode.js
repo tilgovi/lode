@@ -3,6 +3,7 @@ var sys = require("sys"),
   url = require('url'),
   crc = require('./crc32');
 
+var version = "0.0.1";
 var debug = true;
 
 var shard_map = {
@@ -16,9 +17,20 @@ var shard_index_sep = '$';
 handle_request = function(client_request, client_response) {
   request_url_parsed = url.parse(client_request.url, true);
   path_parts = request_url_parsed['pathname'].match(/[^\/$]+/g);
-  client_response.sendHeader(200, {"Content-Type": "text/plain"});
-  client_response.sendBody("Check back soon...");
-  client_response.finish();
+
+  if(!path_parts) {
+	client_response.sendHeader(200, {"Content-Type": "text/plain"});
+	client_response.sendBody("lode version " + version);
+	client_response.finish();
+	return;
+  }
+
+  switch(path_parts.length) {
+	default:
+	  client_response.sendHeader(200, {"Content-Type": "text/plain"});
+	  client_response.sendBody("Check back soon...");
+	  client_response.finish();
+  }
 };
 
 http.createServer(
