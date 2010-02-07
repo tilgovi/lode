@@ -32,13 +32,19 @@ function handle_request(client_request, client_response) {
 
   switch(path_parts.length) {
 	case 1: //db request
-	  db_name = path_parts[0];
+	  handle_db_request(client_request, client_response, path_parts);
 	default:
 	  client_response.sendHeader(200, {"Content-Type": "text/plain"});
 	  client_response.sendBody("Check back soon...");
 	  client_response.finish();
   }
 };
+
+function handle_db_request(client_request, client_response, path_parts) {
+  db_name = path_parts[0];
+  client_response.sendHeader(200, {"Content-Type": "text/plain"});
+  client_response.finish();
+}
 
 http.createServer(
   function(request, response) {
