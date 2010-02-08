@@ -27,13 +27,19 @@ Running Manually
 
 You can start the server by running
 
-    node lode.js
+    lode
 
-When Lode starts it should eventually display the following message:
+Be sure that the node binary is in your path.
 
-    lode has started. This is excellent news.
+When lode starts it should eventually display the following message:
 
-Eventually there should be a test suite.
+    relax party
+
+To check that everything has worked, point your browser to:
+
+   http://127.0.0.1:6984/
+
+Eventually there should be a test suite, but right now there isn't.
 
 Troubleshooting
 ^^^^^^^^^^^^^^^
@@ -50,4 +56,4 @@ Advice welcome.
 Building
 --------
 
-No building is necessary. Just launch using node as above.
+No building is necessary. Just launch as above.

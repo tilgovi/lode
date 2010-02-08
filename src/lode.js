@@ -92,4 +92,4 @@ lounge.createServer(
 	}
   }
 ).listen(6984);
-sys.puts("Server running at http://127.0.0.1:6984/");
+sys.puts("relax party");
