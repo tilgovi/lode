@@ -11,13 +11,25 @@
 // the License.
 
 var sys = require("sys"),
-  http = require('http'),
   url = require('url'),
-  crc = require('./crc32'),
-  shards = require('./shards');
+  lounge = require('./lounge');
 
-var version = "0.0.1";
 var debug = true;
+
+var version = toJSON(
+  {
+	couchdb : "Welcome",
+	version : "0.10.0",
+	lounge : {
+	  lode : "Totally nodular, dude",
+	  version : "0.0.1"
+	}
+  }
+);
+
+function toJSON(obj) {
+    return obj !== null ? JSON.stringify(obj) : null;
+}
 
 function handle_request(client_request, client_response) {
   request_url_parsed = url.parse(client_request.url, true);
@@ -25,23 +37,23 @@ function handle_request(client_request, client_response) {
 
   if(!path_parts) {
 	client_response.sendHeader(200, {"Content-Type": "text/plain"});
-	client_response.sendBody("lode version " + version);
+	client_response.sendBody(version);
 	client_response.finish();
 	return;
   }
 
   //This should probably turn into something like couch's *_handlers conf
   switch(path_parts.length) {
-	case 1: //root space request (_all_tasks and the like)
-	  handle_basic_request(client_request, client_response, path_parts);
-	  break;
-	case 2: //db request
-	  handle_db_request(client_request, client_response, path_parts);
-	  break;
-	default:
-	  client_response.sendHeader(200, {"Content-Type": "text/plain"});
-	  client_response.sendBody("Check back soon...");
-	  client_response.finish();
+  case 1: //root space request (_all_tasks and the like)
+	handle_basic_request(client_request, client_response, path_parts);
+	break;
+  case 2: //db request
+	handle_db_request(client_request, client_response, path_parts);
+	break;
+  default:
+	client_response.sendHeader(200, {"Content-Type": "text/plain"});
+	client_response.sendBody("Check back soon...");
+	client_response.finish();
   }
 };
 
@@ -55,7 +67,7 @@ function handle_db_request(client_request, client_response, path_parts) {
   db_name = path_parts[0];
   client_response.sendHeader(200, {"Content-Type": "text/plain"});
   client_response.sendBody("Nothing here yet, but here are the replica uris by shard\n");
-  shards.shards(db_name).forEach(
+  this.shards(db_name).forEach(
 	function(repls, shard_no) {
 	  client_response.sendBody("Shard " + shard_no + "\n");
 	  repls.forEach(
@@ -66,7 +78,7 @@ function handle_db_request(client_request, client_response, path_parts) {
   client_response.finish();
 }
 
-http.createServer(
+lounge.createServer(
   function(request, response) {
 	try {
 	  handle_request(request, response);
