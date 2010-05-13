@@ -15,7 +15,7 @@ var http = require('http'),
   crc = require('./crc32');
 
 var lounge = {
-  couch_api_version : "0.10.0",
+  couch_api_version : "0.11.0",
 
   shard_map : {
 	nodes : [[5984, 'localhost'], [5984, 'localhost']],
