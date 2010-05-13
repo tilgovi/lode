@@ -73,16 +73,16 @@ function handle_db_request(client_request, client_response, path_parts) {
 var port=6984;
 lounge.createServer(
   function(request, response) {
-	try {
+      try {
 	  handle_request(request, response);
-	} catch(err) {
+      } catch(err) {
 	  response.writeHead(500, {"Content-Type": "text/plain"});
 	  response.write("Internal Server Error\n");
-	  if(debug) {
-		response.write(err.stack);
+	  if (debug) {
+	      response.write(err.stack);
 	  }
 	  response.end();
-	}
+      }
   }
 ).listen(port);
 sys.puts("relax, lode listening on port " + port);
