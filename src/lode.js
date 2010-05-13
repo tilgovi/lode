@@ -11,8 +11,8 @@
 // the License.
 
 var sys = require("sys"),
-  url = require('url'),
-  lounge = require('./lounge');
+    url = require('url'),
+    lounge = require('./lounge');
 
 var debug = true;
 
@@ -51,21 +51,21 @@ function handle_request(client_request, client_response) {
 	handle_db_request(client_request, client_response, path_parts);
 	break;
   default:
-	client_response.writeHead(200, {"Content-Type": "text/plain"});
+	client_response.writeHead(400, {"Content-Type": "text/plain"});
 	client_response.write("Check back soon...");
 	client_response.end();
   }
 };
 
 function handle_basic_request(client_request, client_response, path_parts) {
-  client_response.writeHead(200, {"Content-Type": "text/plain"});
+  client_response.writeHead(400, {"Content-Type": "text/plain"});
   client_response.write("Nothing here yet");
   client_response.end();
 };
 
 function handle_db_request(client_request, client_response, path_parts) {
   db_name = path_parts[0];
-  client_response.writeHead(200, {"Content-Type": "text/plain"});
+  client_response.writeHead(400, {"Content-Type": "text/plain"});
   client_response.write("Nothing here yet, but here are the replica uris by shard\n");
   this.shards(db_name).forEach(
 	function(repls, shard_no) {
