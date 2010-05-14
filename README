@@ -6,8 +6,8 @@ lode is beta software and may or may not be under active development ;)
 Dependencies
 ~~~~~~~~~~~~
 
- * node.js (>=0.1.27) (http://nodejs.org/)
- * Apache CouchDB (>= 0.10.1) (http://couchdb.apache.org/)
+ * node.js (>=0.1.95) (http://nodejs.org/)
+ * Apache CouchDB (>= 0.11) (http://couchdb.apache.org/)
 
 Installing
 ^^^^^^^^^^
