@@ -12,7 +12,12 @@
 
 var sys = require("sys"),
     url = require('url'),
-    lounge = require('./lounge');
+    http = require('http'),
+    proxy = require('./proxy'),
+    chash = require('./chash'),
+    sha1 = require('./sha1');
+
+var my_chash = chash.fresh(3, {'host':'localhost', 'port':5984});
 
 var debug = true;
 
@@ -31,58 +36,29 @@ function toJSON(obj) {
     return obj !== null ? JSON.stringify(obj) : null;
 }
 
-function handle_request(client_request, client_response) {
-  request_url_parsed = url.parse(client_request.url, true);
-  path_parts = request_url_parsed['pathname'].match(/[^\/$]+/g);
+var port = 6984;
 
-  if(!path_parts) {
-	client_response.writeHead(200, {"Content-Type": "text/plain"});
-	client_response.write(version);
-	client_response.end();
-	return;
-  }
-
-  //This should probably turn into something like couch's *_handlers conf
-  switch(path_parts.length) {
-  case 1: //root space request (_all_tasks and the like)
-	handle_basic_request(client_request, client_response, path_parts);
-	break;
-  case 2: //db request
-	handle_db_request(client_request, client_response, path_parts);
-	break;
-  default:
-	client_response.writeHead(400, {"Content-Type": "text/plain"});
-	client_response.write("Check back soon...\n");
-	client_response.end();
-  }
-};
-
-function handle_basic_request(client_request, client_response, path_parts) {
-  client_response.writeHead(400, {"Content-Type": "text/plain"});
-  client_response.write("Nothing here yet.\n");
-  client_response.end();
-};
-
-function handle_db_request(client_request, client_response, path_parts) {
-  db_name = path_parts[0];
-  client_response.writeHead(400, {"Content-Type": "text/plain"});
-  client_response.write("Nothing here yet.\n");
-  client_response.end();
-}
-
-var port=6984;
-lounge.createServer(
-  function(request, response) {
-      try {
-	  handle_request(request, response);
-      } catch(err) {
-	  response.writeHead(500, {"Content-Type": "text/plain"});
-	  response.write("Internal Server Error\n");
-	  if (debug) {
-	      response.write(err.stack);
-	  }
-	  response.end();
-      }
-  }
-).listen(port);
+http.createServer(function(request, response) {
+	request_url_parsed = url.parse(request.url, true);
+	path_parts = request_url_parsed['pathname'].match(/[^\/$]+/g);
+	if (!path_parts) {
+	    response.writeHead(200, {"Content-Type": "text/plain"});
+	    response.write(version);
+	    response.write("\n");
+	    response.end();
+	}
+	switch (path_parts.length) {
+	case 2:
+	    var db = path_parts[0];
+	    var doc = path_parts[1];
+	    var shard = chash.to_host(doc, my_chash);
+	    proxy.proxy(shard.port, shard.host, request, response);
+	    break;
+	default:
+	    response.writeHead(400, {"Content-Type": "text/plain"});
+	    response.write(path_parts + " not handled yet.\n");
+	    response.end();
+	    break;
+	}
+    }).listen(port);
 sys.puts("relax, lode listening on port " + port);
