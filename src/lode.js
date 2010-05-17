@@ -14,8 +14,7 @@ var sys = require("sys"),
   url = require('url'),
   http = require('http'),
   proxy = require('./proxy'),
-  chash = require('./chash'),
-  sha1 = require('./sha1');
+  chash = require('./chash');
 
 var my_chash = chash.fresh(3, {'host':'localhost', 'port':5984});
 
